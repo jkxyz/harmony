@@ -94,24 +94,40 @@ a {
 
 .tempocontainer {
   position: fixed;
-  top: 5px; }
+  top: 5px;
+  left: 5px; }
 
 .tempo-display {
-  background-color: #C8FDDE;
+  background-color: #D0D0D0;
   font-family: "Digi";
   font-size: 60px;
   line-height: 1;
-  padding: 3px 0px; }
+  padding: 0px 0px; }
 
-.slider-wrapper {
-  display: inline-block;
-  width: 20px;
-  height: 150px;
-  padding: 0; }
+.sliders-container {
+  display: flex;
+  width: 100%;
+  padding: 2px 1px;
+  height: 150px; }
 
-.slider-wrapper input {
-  width: 20px;
-  height: 150px;
-  margin: 0;
-  transform-origin: 75px 75px;
-  transform: rotate(-90deg); }
+.slider-pair-container {
+  height: 100%;
+  flex: 1;
+  display: flex; }
+
+.slider-container {
+  width: 50%;
+  height: 100%;
+  position: relative; }
+
+.slider-inner-container {
+  transform-origin: center;
+  transform: rotate(90deg);
+  position: absolute;
+  bottom: 50%;
+  width: 70px; }
+
+.slider-container-text {
+  color: white;
+  text-align: center;
+  margin: 0; }

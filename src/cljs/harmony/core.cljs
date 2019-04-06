@@ -98,7 +98,7 @@
    children]) 
 
 (defn tempo [bpm]
-  [:div.tempocontainer [:div.tempo-display bpm]])
+  [:div.tempocontainer [:div.tempo-display bpm " bpm"]])
 
 (defn app []
   (let [selected @(rf/subscribe [::selected-voice])
@@ -106,16 +106,21 @@
     [:div.main
      [:h1 "h a r m o n y"]
      [tempo 50] ; dummy value
-     [:div.slider-wrapper [:input {:type "range"}]
-                       :min 1
-                       :max 100
-                       :value 50
-                       :id "frequency"]
-     [:div.slider-wrapper [:input {:type "range"}]
-                       :min 1
-                       :max 100
-                       :value 50
-                       :id "amplitude"]
+     [:div.sliders-container
+      [:div.slider-pair-container 
+       [:div.slider-container 
+        [:div.slider-inner-container
+         [:div.slider-container-text "hello"]
+         [:input {:type "range"}]]] 
+       [:div.slider-container 
+        [:div.slider-inner-container
+         [:div.slider-container-text "hello"]
+         [:input {:type "range"}]]]] 
+      [:div.slider-pair-container]
+      [:div.slider-pair-container]
+      [:div.slider-pair-container]
+      [:div.slider-pair-container]
+      [:div.slider-pair-container]]
      [:div.patternkeyscontainer
         (for [voice [:kick :snare :closed-hat :open-hat :tom :clap]]
           [pattern-button {:key voice
