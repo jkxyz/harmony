@@ -4,7 +4,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :dependencies [[org.clojure/clojure "1.10.0"]
+  :dependencies [[org.clojure/clojure "1.8.0"]
                  [ring-server "0.5.0"]
                  [reagent "0.8.1"]
                  [reagent-utils "0.3.2"]
@@ -15,7 +15,9 @@
                  [org.clojure/clojurescript "1.10.520"
                   :scope "provided"]
                  [metosin/reitit "0.3.1"]
-                 [re-frame "0.10.6"]]
+                 [re-frame "0.10.6"]
+                 [overtone "0.10.3"]
+                 [compojure "1.6.1"]]
 
   :plugins [[lein-environ "1.1.0"]
             [lein-cljsbuild "1.1.7"]

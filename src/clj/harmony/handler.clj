@@ -1,9 +1,12 @@
 (ns harmony.handler
   (:require
-   [reitit.ring :as reitit-ring]
-   [harmony.middleware :refer [middleware]]
+   [compojure.core :refer [routes GET]]
+   [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
+   [ring.middleware.reload :refer [wrap-reload]]
+   [prone.middleware :refer [wrap-exceptions]]
    [hiccup.page :refer [include-js include-css html5]]
-   [config.core :refer [env]]))
+   [config.core :refer [env]]
+   [overtone.core :as overtone]))
 
 (def mount-target
   [:div#app
@@ -23,17 +26,13 @@
     mount-target
     (include-js "/js/app.js")]))
 
-(defn index-handler
-  [_request]
+(defn index-handler []
   {:status 200
    :headers {"Content-Type" "text/html"}
    :body (loading-page)})
 
 (def app
-  (reitit-ring/ring-handler
-   (reitit-ring/router
-    [["/" {:get {:handler index-handler}}]])
-   (reitit-ring/routes
-    (reitit-ring/create-resource-handler {:path "/" :root "/public"})
-    (reitit-ring/create-default-handler))
-   {:middleware middleware}))
+  (-> (routes (GET "/" [] (index-handler)))
+      (wrap-defaults site-defaults)
+      (wrap-exceptions)
+      (wrap-reload)))
