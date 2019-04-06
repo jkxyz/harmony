@@ -149,7 +149,7 @@
   (let [selected @(rf/subscribe [::selected-voice])
         selected-seq @(rf/subscribe[::sequence selected])]
     [:div.main
-     (comment [:h1 "h a r m o n y"])
+     [:h1 [:em "JJ-808 "] [:small "v.1"]]
      [tempo]
      [:div.sliders-container
       [:div.slider-pair-container
@@ -169,7 +169,7 @@
        [slider {:voice :kick :param :volume :text "Vol."}]]
       [:div.slider-pair-container
        [slider {:voice :kick :param :frequency :text "Freq."}]
-       [slider {:voice :kick :param :volume :text "Vol."}]]]
+       [slider {:voice :clap :param :volume :text "Vol."}]]]
      [:div.patternkeyscontainer
       (for [voice [:kick :snare :closed-hat :open-hat :tom :clap]]
         [pattern-button {:key voice

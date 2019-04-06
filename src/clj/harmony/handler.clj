@@ -44,7 +44,7 @@
 
 (defmethod dispatch :set-param
   [[_ voice param value]]
-  (swap! overtone/db assoc-in [:parameters voice param] value))
+  (swap! overtone/db assoc-in [:parameters voice param] (Integer/parseInt value)))
 
 (defn broadcast [[event & rest]]
   (doseq [ch (vals @clients)]
