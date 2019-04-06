@@ -42,15 +42,22 @@
   [[_ voice index]]
   (swap! overtone/db assoc-in [:voices voice index] 0))
 
+(defn broadcast [m]
+  (doseq [ch (vals @clients)]
+    (send! ch (str m))))
+
 (defn websocket-handler [request]
   (with-channel request ch
     (let [client-id (UUID/randomUUID)]
       (swap! clients assoc client-id ch)
       (on-close ch (fn [_] (swap! clients dissoc client-id)))
-      (on-receive ch (fn [m]
-                       (let [event (edn/read-string m)]
-                         (println "Received:" event)
-                         (dispatch event)))))))
+      (on-receive
+       ch
+       (fn [m]
+         (let [event (edn/read-string m)]
+           (println "Received:" event)
+           (dispatch event)
+           (broadcast event)))))))
 
 (comment
   @clients
