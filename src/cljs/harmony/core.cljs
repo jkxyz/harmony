@@ -65,7 +65,7 @@
 
 ;; COMPONENTS
 
-(defn button [{:keys [bar on? on-click]}]
+(defn sequencer-button [{:keys [bar on? on-click]}]
   [:div
    {:on-click on-click
     :class ["keybutton"
@@ -73,23 +73,43 @@
             (when on? "keybutton-pressed")]}
    [:div.button-light]])
 
+(defn pattern-button [{:keys [instrument selected?]}]
+  [:div
+   {:class ["instrument-button"
+            (when selected? "instrument-button-pressed")]}
+   instrument])
+
 (defn tempo [bpm]
-  [:div.tempo-display bpm])
+  [:div.tempocontainer [:div.tempo-display bpm]])
 
 (defn app []
   [:div.main
    [:h1 "h a r m o n y"]
-   [:div.tempocontainer [tempo 50]] ; dummy value
+   [tempo 50] ; dummy value
+   [:div.slider-wrapper [:input {:type "range"}]
+                     :min 1
+                     :max 100
+                     :value 50
+                     :id "frequency"]
+   [:div.slider-wrapper [:input {:type "range"}]
+                     :min 1
+                     :max 100
+                     :value 50
+                     :id "amplitude"]
+   [:div.patternkeyscontainer
+    [pattern-button {:instrument "KICK" :selected? true}]
+    [pattern-button {:instrument "SNARE" :selected? true}]
+    [pattern-button {:instrument "CLOSED-HAT" :selected? true}]
+    [pattern-button {:instrument "OPEN-HAT" :selected? true}]
+    [pattern-button {:instrument "TOM" :selected? true}]
+    [pattern-button {:instrument "CLAP" :selected? true}]]
    [:div.keyscontainer
     (for [[kick-val beat] (map list @(rf/subscribe [::sequence :kick]) (range 0 16))]
-      [button {:key beat
-               :bar (inc (Math/floor (/ beat bars)))
-               :on? (= kick-val 1)
-               :on-click #(rf/dispatch [(if (= kick-val 1)
-                                          :button-off
-                                          :button-on)
-                                        :kick
-                                        beat])}])]])
+      [sequencer-button 
+       {:key beat
+        :bar (inc (Math/floor (/ beat bars)))
+        :on? (= kick-val 1)
+        :on-click #(rf/dispatch [(if (= kick-val 1) ::button-off ::button-on) :kick beat])}])]])
 
 (defn mount-root []
   (r/render [app] (.getElementById js/document "app")))
@@ -115,16 +135,3 @@
 
 
 
-(comment[:slidercontainer [:input {:type "range"}
-                           :min 1
-                           :max 100
-                           :value 50
-                           :class "slider"
-                           :id "frequency"]])
-(comment "you need another div here")
-(comment[:slidercontainer [:input {:type "range"}
-                           :min 1
-                           :max 100
-                           :value 50
-                           :class "slider"
-                           :id "amplitude"]])
