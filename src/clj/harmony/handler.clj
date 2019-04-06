@@ -6,11 +6,10 @@
    [prone.middleware :refer [wrap-exceptions]]
    [hiccup.page :refer [include-js include-css html5]]
    [config.core :refer [env]]
-   [overtone.core :as overtone]))
-
-(def mount-target
-  [:div#app
-   [:h2 "Loading..."]])
+   [org.httpkit.server :refer [with-channel on-close on-receive send!]]
+   [harmony.overtone :as overtone]
+   [clojure.edn :as edn])
+  (:import java.util.UUID))
 
 (defn head []
   [:head
@@ -23,7 +22,7 @@
   (html5
    (head)
    [:body {:class "body-container"}
-    mount-target
+    [:div#app [:h2 "Loading..."]]
     (include-js "/js/app.js")]))
 
 (defn index-handler []
@@ -31,8 +30,37 @@
    :headers {"Content-Type" "text/html"}
    :body (loading-page)})
 
+(defonce clients (atom {}))
+
+(defmulti dispatch first)
+
+(defmethod dispatch :button-on
+  [[_ voice index]]
+  (swap! overtone/db assoc-in [:voices voice index] 1))
+
+(defmethod dispatch :button-off
+  [[_ voice index]]
+  (swap! overtone/db assoc-in [:voices voice index] 0))
+
+(defn websocket-handler [request]
+  (with-channel request ch
+    (let [client-id (UUID/randomUUID)]
+      (swap! clients assoc client-id ch)
+      (on-close ch (fn [_] (swap! clients dissoc client-id)))
+      (on-receive ch (fn [m]
+                       (let [event (edn/read-string m)]
+                         (println "Received:" event)
+                         (dispatch event)))))))
+
+(comment
+  @clients
+  (reset! clients {})
+  )
+
 (def app
-  (-> (routes (GET "/" [] (index-handler)))
+  (-> (routes
+       (GET "/" [] (index-handler))
+       (GET "/ws" request (websocket-handler request)))
       (wrap-defaults site-defaults)
       (wrap-exceptions)
       (wrap-reload)))
