@@ -15,7 +15,7 @@
   [:head
    [:meta {:charset "utf-8"}]
    [:meta {:name "viewport"
-           :content "width=device-width, initial-scale=1"}]
+           :content "width=device-width, initial-scale=1, user-scalable=no"}]
    (include-css (if (env :dev) "/css/site.css" "/css/site.min.css"))])
 
 (defn loading-page []
@@ -41,6 +41,10 @@
 (defmethod dispatch :button-off
   [[_ voice index]]
   (swap! overtone/db assoc-in [:sequences voice index] 0))
+
+(defmethod dispatch :set-param
+  [[_ voice param value]]
+  (swap! overtone/db assoc-in [:parameters voice param] value))
 
 (defn broadcast [[event & rest]]
   (doseq [ch (vals @clients)]

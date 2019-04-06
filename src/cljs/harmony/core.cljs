@@ -25,6 +25,7 @@
 (rf/reg-fx
  :send
  (fn [event]
+   (println "Sending:" (str event))
    (.send conn (str event))))
 
 ;; SERVER EVENTS
@@ -43,6 +44,11 @@
  :server/button-off
  (fn [db [_ voice beat-index]]
    (assoc-in db [:server :sequences voice beat-index] 0)))
+
+(rf/reg-event-db
+ :server/set-param
+ (fn [db [_ voice param value]]
+   (assoc-in db [:server :parameters voice param] value)))
 
 ;; UI EVENTS
 
@@ -67,6 +73,11 @@
  (fn [db [_ voice]]
    (assoc db :selected-voice voice)))
 
+(rf/reg-event-fx
+ :set-param
+ (fn [_ [_ voice param value]]
+   {:send [:set-param voice param value]}))
+
 ;; SUBSCRIPTIONS
 
 (rf/reg-sub
@@ -78,6 +89,16 @@
  ::selected-voice
  (fn [db _]
    (:selected-voice db)))
+
+(rf/reg-sub
+ ::bpm
+ (fn [db _]
+   (-> db :server :bpm)))
+
+(rf/reg-sub
+ ::param
+ (fn [db [_ voice param]]
+   (get-in db [:server :parameters voice param])))
 
 ;; COMPONENTS
 
@@ -97,28 +118,58 @@
    children])
 
 (defn tempo [bpm]
-  [:div.tempocontainer [:div.tempo-display bpm " bpm"]])
+  [:div.tempocontainer
+   [:div.tempo-display
+    @(rf/subscribe [::bpm])]])
 
-(defn slider-pair []
-  [:div.slider-pair-container
-   [:div.slider-container
-    [:input.slider {:type "range" :min 1 :max 100 :orient "vertical"}]]
-   [:div.slider-container
-    [:input.slider {:type "range" :min 1 :max 100 :orient "vertical"}]]])
+(defn slider [{:keys [voice param text]}]
+  (let [input (atom nil)
+        param-val (rf/subscribe [::param voice param])]
+    (r/create-class
+     {:component-did-update
+      (fn []
+        (set! (.-value @input) @param-val))
+      :component-did-mount
+      (fn []
+        (set! (.-value @input) @param-val))
+      :reagent-render
+      (fn [{:keys [voice param text]}]
+        @param-val
+        [:div.slider-container
+         [:input.slider
+          {:ref (partial reset! input)
+           :on-change #(rf/dispatch [:set-param voice param (.-target.value %)])
+           :type "range"
+           :orient "vertical"
+           :min 1
+           :max 100}]
+         [:div.slider-text text]])})))
 
 (defn app []
   (let [selected @(rf/subscribe [::selected-voice])
         selected-seq @(rf/subscribe[::sequence selected])]
     [:div.main
      (comment [:h1 "h a r m o n y"])
-     (comment [tempo 50]) ; dummy value
+     [tempo]
      [:div.sliders-container
-      [slider-pair]
-      [slider-pair]
-      [slider-pair]
-      [slider-pair]
-      [slider-pair]
-      [slider-pair]]
+      [:div.slider-pair-container
+       [slider {:voice :kick :param :frequency :text "Freq."}]
+       [slider {:voice :kick :param :volume :text "Vol."}]]
+      [:div.slider-pair-container
+       [slider {:voice :kick :param :frequency :text "Freq."}]
+       [slider {:voice :kick :param :volume :text "Vol."}]]
+      [:div.slider-pair-container
+       [slider {:voice :kick :param :frequency :text "Freq."}]
+       [slider {:voice :kick :param :volume :text "Vol."}]]
+      [:div.slider-pair-container
+       [slider {:voice :kick :param :frequency :text "Freq."}]
+       [slider {:voice :kick :param :volume :text "Vol."}]]
+      [:div.slider-pair-container
+       [slider {:voice :kick :param :frequency :text "Freq."}]
+       [slider {:voice :kick :param :volume :text "Vol."}]]
+      [:div.slider-pair-container
+       [slider {:voice :kick :param :frequency :text "Freq."}]
+       [slider {:voice :kick :param :volume :text "Vol."}]]]
      [:div.patternkeyscontainer
       (for [voice [:kick :snare :closed-hat :open-hat :tom :clap]]
         [pattern-button {:key voice

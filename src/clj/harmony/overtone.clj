@@ -16,7 +16,13 @@
                :closed-hat (empty-sequence)
                :tom (empty-sequence)
                :clap (empty-sequence)
-               :snare (empty-sequence)}})
+               :snare (empty-sequence)}
+   :parameters {:kick {:frequency 100 :volume 50}
+                :open-hat {:frequency 50 :volume 50}
+                :closed-hat {:frequency 50 :volume 50}
+                :tom {:frequency 50 :volume 50}
+                :clap {:frequency 50 :volume 50}
+                :snare {:frequency 50 :volume 50}}})
 
 (defonce db (atom initial-db))
 
