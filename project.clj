@@ -54,7 +54,9 @@
               :pretty-print  false}}
             :app
             {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
-             :figwheel {:on-jsload "harmony.core/mount-root"}
+             :figwheel
+             {:on-jsload "harmony.core/mount-root"
+              :websocket-host :js-client-host}
              :compiler
              {:main "harmony.dev"
               :asset-path "/js/out"
@@ -72,6 +74,7 @@
   :figwheel
   {:http-server-root "public"
    :server-port 3449
+   :server-ip "0.0.0.0"
    :nrepl-port 7002
    :nrepl-middleware [cider.piggieback/wrap-cljs-repl
                       ]

@@ -56,23 +56,30 @@ a {
   }
 }
 
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+}
+
 // KEYZ (for BEATZ ;))
 
 .keyscontainer {
   width: 100%;
-  padding: 2px 1px;
+  padding: 2px 8px 8px 8px;
   background-color: #484848;
   display: flex;
-  position: fixed;
-  bottom: 5px;
 }
 
 .keybutton {
   border: none;
   height: 70px;
   flex: 1;
-  margin: 0 5px;
-  border-radius: 0px 0px 13px 13px;
+  margin: 0 2px;
+  border-radius: 5px 5px 13px 13px;
   position: relative;
 }
 
@@ -85,7 +92,7 @@ a {
 }
 
 .keybutton-pressed {
-  background-color: #1F0051;
+  /* background-color: #1F0051; */
 }
 
 .button-light {
@@ -95,16 +102,16 @@ a {
     border-radius: 9999999px;
     width: 10px;
     height: 10px;
-    background-color: black;
+    background-color: transparentize(black, .8);
 
     .keybutton-pressed > & {
-        background-color: white;
+      background-color: orange;
     }
 }
 
 .patternkeyscontainer {
   width: 100%;
-  padding: 2px 1px;
+  padding: 10px 1px;
   background-color: #484848;
   display: flex;
 }
@@ -115,13 +122,15 @@ a {
   border: none;
   flex: 1;
   margin: 0 5px;
-  border-radius: 8px;
+  border-radius: 9999px;
   position: relative;
   font-size: 12px;
   line-height: 1;
   font-weight: bold;
-  padding: 4px 0px;
+  padding: 8px 0px;
   text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
 
   &.instrument-button-pressed {
     background-color: white;
@@ -150,40 +159,27 @@ a {
 // slider-container
 // slider
 
+
 .sliders-container {
   display: flex;
-  width: 100%;
-  padding: 2px 1px;
-  height: 150px;
+  margin-bottom: 10px;
 }
 
 .slider-pair-container {
-  height: 100%;
   flex: 1;
   display: flex;
+  height: 30vh;
 }
 
 .slider-container {
   width: 50%;
-  height: 100%;
-  position: relative;
 }
 
-.slider-inner-container {
-  transform-origin: center;
-  transform: rotate(90deg);
-  position: absolute;
-  bottom: 50%;
-  width: 70px;
-}
-
-.slider-container-text {
-  color: white;
-  text-align: center;
+.slider {
+  -webkit-appearance: slider-vertical;
   margin: 0;
-}
-
-.slider-container input {
+  width: 100%;
+  height: 100%;
 }
 
 //.slidercontainer {

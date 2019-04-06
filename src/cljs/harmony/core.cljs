@@ -11,7 +11,7 @@
 (defn empty-sequence []
   (into [] (repeat sequence-length 0)))
 
-(defonce conn (js/WebSocket. "ws://localhost:3449/ws"))
+(defonce conn (js/WebSocket. (str "ws://" js/window.location.hostname ":3449/ws")))
 
 (.addEventListener
  conn
@@ -47,10 +47,10 @@
 ;; UI EVENTS
 
 (rf/reg-event-db
-  :init
-  (fn [db _]
-    (-> db
-        (assoc :selected-voice :kick))))
+ :init
+ (fn [db _]
+   (-> db
+       (assoc :selected-voice :kick))))
 
 (rf/reg-event-fx
  :button-on
@@ -63,10 +63,9 @@
    {:send [:button-off voice beat-index]}))
 
 (rf/reg-event-db
-  :select-voice
-  (fn [db [_ voice]]
-    (assoc db :selected-voice voice)))
-
+ :select-voice
+ (fn [db [_ voice]]
+   (assoc db :selected-voice voice)))
 
 ;; SUBSCRIPTIONS
 
@@ -76,9 +75,9 @@
    (-> db :server :sequences voice)))
 
 (rf/reg-sub
-  ::selected-voice
-  (fn [db _]
-    (:selected-voice db)))
+ ::selected-voice
+ (fn [db _]
+   (:selected-voice db)))
 
 ;; COMPONENTS
 
@@ -95,48 +94,47 @@
    {:on-click #(rf/dispatch [:select-voice voice])
     :class ["instrument-button"
             (when selected? "instrument-button-pressed")]}
-   children]) 
+   children])
 
 (defn tempo [bpm]
   [:div.tempocontainer [:div.tempo-display bpm " bpm"]])
+
+(defn slider-pair []
+  [:div.slider-pair-container
+   [:div.slider-container
+    [:input.slider {:type "range" :min 1 :max 100 :orient "vertical"}]]
+   [:div.slider-container
+    [:input.slider {:type "range" :min 1 :max 100 :orient "vertical"}]]])
 
 (defn app []
   (let [selected @(rf/subscribe [::selected-voice])
         selected-seq @(rf/subscribe[::sequence selected])]
     [:div.main
-     [:h1 "h a r m o n y"]
-     [tempo 50] ; dummy value
+     (comment [:h1 "h a r m o n y"])
+     (comment [tempo 50]) ; dummy value
      [:div.sliders-container
-      [:div.slider-pair-container 
-       [:div.slider-container 
-        [:div.slider-inner-container
-         [:div.slider-container-text "hello"]
-         [:input {:type "range"}]]] 
-       [:div.slider-container 
-        [:div.slider-inner-container
-         [:div.slider-container-text "hello"]
-         [:input {:type "range"}]]]] 
-      [:div.slider-pair-container]
-      [:div.slider-pair-container]
-      [:div.slider-pair-container]
-      [:div.slider-pair-container]
-      [:div.slider-pair-container]]
+      [slider-pair]
+      [slider-pair]
+      [slider-pair]
+      [slider-pair]
+      [slider-pair]
+      [slider-pair]]
      [:div.patternkeyscontainer
-        (for [voice [:kick :snare :closed-hat :open-hat :tom :clap]]
-          [pattern-button {:key voice
-                           :voice voice
-                           :selected? (= voice selected)}
-             (name voice)])]
+      (for [voice [:kick :snare :closed-hat :open-hat :tom :clap]]
+        [pattern-button {:key voice
+                         :voice voice
+                         :selected? (= voice selected)}
+         (name voice)])]
      [:div.keyscontainer
       (for [[kick-val beat] (map list selected-seq (range 0 16))]
-        [sequencer-button 
+        [sequencer-button
          {:key beat
           :bar (inc (Math/floor (/ beat bars)))
           :on? (= kick-val 1)
-          :on-click #(rf/dispatch [(if (= kick-val 1) 
-                                     :button-off 
-                                     :button-on) 
-                                   selected 
+          :on-click #(rf/dispatch [(if (= kick-val 1)
+                                     :button-off
+                                     :button-on)
+                                   selected
                                    beat])}])]]))
 
 (defn mount-root []
@@ -145,22 +143,3 @@
 (defn init! []
   (rf/dispatch-sync [:init])
   (mount-root))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

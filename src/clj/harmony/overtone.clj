@@ -42,6 +42,8 @@
     (schedule-voice :snare first-beat nome #(snare))
     (apply-by (nome next-first-beat) #'sequence-loop [nome])))
 
+(sequence-loop nome)
+
 (comment
   (overtone/stop-all)
 
