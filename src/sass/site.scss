@@ -121,9 +121,12 @@ a {
   line-height: 1;
   font-weight: bold;
   padding: 4px 0px;
-}
+  text-transform: uppercase;
 
-.instrument-button-pressed {}
+  &.instrument-button-pressed {
+    background-color: white;
+  }
+}
 
 .tempocontainer {
     position: fixed;

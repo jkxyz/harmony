@@ -87,7 +87,10 @@ a {
   font-size: 12px;
   line-height: 1;
   font-weight: bold;
-  padding: 4px 0px; }
+  padding: 4px 0px;
+  text-transform: uppercase; }
+  .instrument-button.instrument-button-pressed {
+    background-color: white; }
 
 .tempocontainer {
   position: fixed;
