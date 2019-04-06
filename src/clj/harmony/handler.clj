@@ -36,11 +36,11 @@
 
 (defmethod dispatch :button-on
   [[_ voice index]]
-  (swap! overtone/db assoc-in [:voices voice index] 1))
+  (swap! overtone/db assoc-in [:sequences voice index] 1))
 
 (defmethod dispatch :button-off
   [[_ voice index]]
-  (swap! overtone/db assoc-in [:voices voice index] 0))
+  (swap! overtone/db assoc-in [:sequences voice index] 0))
 
 (defn broadcast [m]
   (doseq [ch (vals @clients)]
