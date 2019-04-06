@@ -5,14 +5,23 @@
 // @import 'profile';
 
 // You can use any sass features, like variables, for instance:
-$font-stack: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
+$font-stack: monospace;
 $base-font-size: 1.125em;
 
+@font-face {
+    font-family: "Digi";
+    src: url("/DS-DIGI.TTF");
+}
+
+* {
+  box-sizing: border-box;
+}
+
 .body-container {
+  background-color: black;
   font-family: $font-stack;
-  max-width: 600px;
   margin: 0 auto;
-  padding-top: 72px;
+  //padding-top: 42px;
   -webkit-font-smoothing: antialiased;
   font-size: $base-font-size;
   color: #333;
@@ -24,7 +33,9 @@ h1, h2, h3 {
 }
 
 h1 {
-  font-size: $base-font-size + 1.375;
+  color: #fff;
+  font-size: $base-font-size + 0.475;
+  text-align: center;
 }
 
 h2 {
@@ -43,4 +54,106 @@ a {
   &:hover {
     text-decoration: underline;
   }
+}
+
+// keys (for beatz ;))
+
+.keyscontainer {
+  width: 100%;
+  padding: 2px 1px;
+  background-color: #484848;
+  display: flex;
+  position: fixed;
+  bottom: 5px;
+}
+
+.keybutton {
+  border: none;
+  height: 70px;
+  flex: 1;
+  margin: 0 5px;
+  border-radius: 0px 0px 13px 13px;
+  position: relative;
+}
+
+.keybutton-purple {
+  background-color: #802450;
+}
+
+.keybutton-pink {
+  background-color: #CC3980;
+}
+
+.keybutton-pressed {
+  background-color: #1F0051;
+}
+
+.button-light {
+    position: absolute;
+    bottom: 10px;
+    left: calc(50% - 5px);
+    border-radius: 9999999px;
+    width: 10px;
+    height: 10px;
+    background-color: black;
+
+    .keybutton-pressed > & {
+        background-color: white;
+    }
+}
+
+.tempocontainer {
+    position: fixed;
+    top: 5px;
+}
+
+.tempo-display {
+    padding: 3px;
+    margin: 3px;
+    background-color: #C8FDDE;
+    font-family: "Digi";
+    font-size: 60px;
+}
+
+// slider
+
+.slidercontainer {
+  width: 100%;
+  padding-top: 30px;
+  // TODO transform-origin:
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 30%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
 }

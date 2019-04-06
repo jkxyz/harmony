@@ -1,34 +1,117 @@
+@font-face {
+  font-family: "Digi";
+  src: url("/DS-DIGI.TTF"); }
+
+* {
+  box-sizing: border-box; }
+
 .body-container {
-  font-family: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
-  max-width: 600px;
+  background-color: black;
+  font-family: monospace;
   margin: 0 auto;
-  padding-top: 72px;
   -webkit-font-smoothing: antialiased;
   font-size: 1.125em;
   color: #333;
-  line-height: 1.5em;
-}
+  line-height: 1.5em; }
 
 h1, h2, h3 {
-  color: #000;
-}
+  color: #000; }
+
 h1 {
-  font-size: 2.5em
-}
+  color: #fff;
+  font-size: 1.6em;
+  text-align: center; }
 
 h2 {
-  font-size: 2em
-}
+  font-size: 2em; }
 
 h3 {
-  font-size: 1.5em
-}
+  font-size: 1.25em; }
 
 a {
   text-decoration: none;
-  color: #09f;
-}
+  color: #09f; }
+  a:hover {
+    text-decoration: underline; }
 
-a:hover {
-  text-decoration: underline;
-}
+.keyscontainer {
+  width: 100%;
+  padding: 2px 1px;
+  background-color: #484848;
+  display: flex;
+  position: fixed;
+  bottom: 5px; }
+
+.keybutton {
+  border: none;
+  height: 70px;
+  flex: 1;
+  margin: 0 5px;
+  border-radius: 0px 0px 13px 13px;
+  position: relative; }
+
+.keybutton-purple {
+  background-color: #802450; }
+
+.keybutton-pink {
+  background-color: #CC3980; }
+
+.keybutton-pressed {
+  background-color: #1F0051; }
+
+.button-light {
+  position: absolute;
+  bottom: 10px;
+  left: calc(50% - 5px);
+  border-radius: 9999999px;
+  width: 10px;
+  height: 10px;
+  background-color: black; }
+  .keybutton-pressed > .button-light {
+    background-color: white; }
+
+.tempocontainer {
+  position: fixed;
+  top: 5px; }
+
+.tempo-display {
+  padding: 3px;
+  margin: 3px;
+  background-color: #C8FDDE;
+  font-family: "Digi";
+  font-size: 60px; }
+
+.slidercontainer {
+  width: 100%;
+  padding-top: 30px; }
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 30%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s; }
+
+.slider:hover {
+  opacity: 1; }
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer; }
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer; }
