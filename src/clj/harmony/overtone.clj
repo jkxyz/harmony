@@ -10,7 +10,13 @@
 (defn empty-sequence [] (into [] (repeat sequence-length 0)))
 
 (def initial-db
-  {:sequences {:kick (empty-sequence)}})
+  {:bpm 140
+   :sequences {:kick (empty-sequence)
+               :open-hat (empty-sequence)
+               :closed-hat (empty-sequence)
+               :tom (empty-sequence)
+               :clap (empty-sequence)
+               :snare (empty-sequence)}})
 
 (defonce db (atom initial-db))
 
@@ -18,7 +24,6 @@
 
 (defn beat-offset [index]
   (+ (Math/floor (/ index 4)) (/ (mod index 4) 4)))
-
 
 (defn schedule-kick [first-beat nome]
   (dotimes [index sequence-length]
@@ -36,9 +41,6 @@
   (overtone/stop-all)
 
   (sequence-loop nome)
-
-  (swap! db assoc :kick [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1])
-  (swap! db assoc :kick [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0])
 
   (reset! db initial-db)
 

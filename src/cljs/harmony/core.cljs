@@ -1,7 +1,8 @@
 (ns harmony.core
   (:require
    [reagent.core :as r]
-   [re-frame.core :as rf]))
+   [re-frame.core :as rf]
+   [clojure.edn :as edn]))
 
 (def sequence-length 16)
 
@@ -12,31 +13,48 @@
 
 (defonce conn (js/WebSocket. "ws://localhost:3449/ws"))
 
+(.addEventListener
+ conn
+ "message"
+ (fn [event]
+   (println "Received:" (.-data event))
+   (rf/dispatch (edn/read-string (.-data event)))))
+
 ;; EFFECTS
 
 (rf/reg-fx
- ::send
+ :send
  (fn [event]
    (.send conn (str event))))
 
-;; EVENTS
+;; SERVER EVENTS
 
 (rf/reg-event-db
- ::init
- (fn [db _]
-   {:sequences {:kick (empty-sequence)}}))
+ :server/init
+ (fn [_ [_ initial-db]]
+   initial-db))
+
+(rf/reg-event-db
+ :server/button-on
+ (fn [db [_ voice beat-index]]
+   (assoc-in db [:sequences voice beat-index] 1)))
+
+(rf/reg-event-db
+ :server/button-off
+ (fn [db [_ voice beat-index]]
+   (assoc-in db [:sequences voice beat-index] 0)))
+
+;; UI EVENTS
 
 (rf/reg-event-fx
- ::button-on
+ :button-on
  (fn [{:keys [db]} [_ voice beat-index]]
-   {:db (assoc-in db [:sequences voice beat-index] 1)
-    ::send [:button-on voice beat-index]}))
+   {:send [:button-on voice beat-index]}))
 
 (rf/reg-event-fx
- ::button-off
+ :button-off
  (fn [{:keys [db]} [_ voice beat-index]]
-   {:db (assoc-in db [:sequences voice beat-index] 0)
-    ::send [:button-off voice beat-index]}))
+   {:send [:button-off voice beat-index]}))
 
 ;; SUBSCRIPTIONS
 
@@ -44,6 +62,8 @@
  ::sequence
  (fn [db [_ voice]]
    (-> db :sequences voice)))
+
+;; COMPONENTS
 
 (defn button [{:keys [bar on? on-click]}]
   [:div
@@ -65,13 +85,16 @@
       [button {:key beat
                :bar (inc (Math/floor (/ beat bars)))
                :on? (= kick-val 1)
-               :on-click #(rf/dispatch [(if (= kick-val 1) ::button-off ::button-on) :kick beat])}])]])
+               :on-click #(rf/dispatch [(if (= kick-val 1)
+                                          :button-off
+                                          :button-on)
+                                        :kick
+                                        beat])}])]])
 
 (defn mount-root []
   (r/render [app] (.getElementById js/document "app")))
 
 (defn init! []
-  (rf/dispatch-sync [::init])
   (mount-root))
 
 

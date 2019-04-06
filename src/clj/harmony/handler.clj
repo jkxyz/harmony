@@ -42,14 +42,15 @@
   [[_ voice index]]
   (swap! overtone/db assoc-in [:sequences voice index] 0))
 
-(defn broadcast [m]
+(defn broadcast [[event & rest]]
   (doseq [ch (vals @clients)]
-    (send! ch (str m))))
+    (send! ch (str (into [(keyword "server" (name event))] rest)))))
 
 (defn websocket-handler [request]
   (with-channel request ch
     (let [client-id (UUID/randomUUID)]
       (swap! clients assoc client-id ch)
+      (send! ch (str [:server/init @overtone/db]))
       (on-close ch (fn [_] (swap! clients dissoc client-id)))
       (on-receive
        ch
