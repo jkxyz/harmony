@@ -132,7 +132,7 @@
    [:div.tempo-display
     @(rf/subscribe [::bpm])]])
 
-(defn slider [{:keys [voice param text]}]
+(defn slider [{:keys [voice param text min max] :or {min 0 max 100}}]
   (let [input (atom nil)
         param-val (rf/subscribe [::param voice param])]
     (r/create-class
@@ -151,8 +151,8 @@
            :on-change #(rf/dispatch [:set-param voice param (.-target.value %)])
            :type "range"
            :orient "vertical"
-           :min 1
-           :max 100}]
+           :min min
+           :max max}]
          [:div.slider-text text]])})))
 
 (defn app []
@@ -160,12 +160,12 @@
         selected-seq @(rf/subscribe[::sequence selected])]
     [:div.main
      [:h1 [:em "JJ-808 "] [:small "v.1"]]
-     [:div.header 
+     [:div.header
       [tempo]
-      [:div.start-stop-button-container 
+      [:div.start-stop-button-container
        {:on-click #(rf/dispatch [:start])}
        [:div.start-stop-button-text "start"]]
-      [:div.start-stop-button-container 
+      [:div.start-stop-button-container
        {:on-click #(rf/dispatch [:stop])}
        [:div.start-stop-button-text "stop"]]]
      [:div.sliders-container
@@ -173,25 +173,24 @@
        [slider {:voice :kick :param :frequency :text "Freq."}]
        [slider {:voice :kick :param :volume :text "Vol."}]]
       [:div.slider-pair-container
-       [slider {:voice :kick :param :frequency :text "Freq."}]
-       [slider {:voice :kick :param :volume :text "Vol."}]]
+       [slider {:voice :snare :param :frequency :text "Freq." :min 405 :max 1000}]
+       [slider {:voice :snare :param :volume :text "Vol."}]]
       [:div.slider-pair-container
-       [slider {:voice :kick :param :frequency :text "Freq."}]
-       [slider {:voice :kick :param :volume :text "Vol."}]]
+       [slider {:voice :closed-hat :param :decay :text "Decay" :min 1}]
+       [slider {:voice :closed-hat :param :volume :text "Vol."}]]
       [:div.slider-pair-container
-       [slider {:voice :kick :param :frequency :text "Freq."}]
-       [slider {:voice :kick :param :volume :text "Vol."}]]
+       [slider {:voice :open-hat :param :filter :text "Filter" :min 1000 :max 8000}]
+       [slider {:voice :open-hat :param :volume :text "Vol."}]]
       [:div.slider-pair-container
-       [slider {:voice :kick :param :frequency :text "Freq."}]
-       [slider {:voice :kick :param :volume :text "Vol."}]]
+       [slider {:voice :tom :param :frequency :text "Freq." :min 50 :max 400}]
+       [slider {:voice :tom :param :volume :text "Vol."}]]
       [:div.slider-pair-container
-       [slider {:voice :kick :param :frequency :text "Freq."}]
+       [slider {:voice :clap :param :filter :text "Filter" :min 100 :max 10000}]
        [slider {:voice :clap :param :volume :text "Vol."}]]]
      [:div.patternkeyscontainer
       (for [voice [:kick :snare :closed-hat :open-hat :tom :clap]]
-        [pattern-button {:key voice
-                         :voice voice
-                         :selected? (= voice selected)}
+        [pattern-button
+         {:key voice :voice voice :selected? (= voice selected)}
          (name voice)])]
      [:div.keyscontainer
       (for [[kick-val beat] (map list selected-seq (range 0 16))]

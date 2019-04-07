@@ -46,6 +46,15 @@
   [[_ voice param value]]
   (swap! overtone/db assoc-in [:parameters voice param] (Integer/parseInt value)))
 
+(defmethod dispatch :start
+  [_]
+  (overtone/stop!)
+  (overtone/start!))
+
+(defmethod dispatch :stop
+  [_]
+  (overtone/stop!))
+
 (defn broadcast [[event & rest]]
   (doseq [ch (vals @clients)]
     (send! ch (str (into [(keyword "server" (name event))] rest)))))
