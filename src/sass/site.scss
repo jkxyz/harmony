@@ -68,6 +68,67 @@ a {
   height: 100vh;
 }
 
+// START and STOP BUTTONS
+
+//.start-stop-button {
+//  width: 14%;
+//  position: relative;
+//  background-color: #EBE696;
+//  height: 55px;
+//  font-size: 25px;
+//  line-height: 1;
+//  border-radius: 3px;
+//  margin: 5px;
+//  text-transform: uppercase;
+//  text-align: center;
+//  display: inline-block;
+//}
+
+.header {
+  position: absolute;
+  top: 5px;
+  display: flex;
+  width: 100%;
+}
+
+.start-stop-button-container {
+  position: relative;
+  width: 14%;
+}
+
+.start-stop-button-text {
+  //background-color: #EBE696;
+  background-color: #F8E5D3;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 17px 0;
+  //line-height: 1;
+  border-radius: 3px;
+  margin-right: 5px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+// TEMPO DISPLAY
+
+.tempocontainer {
+  position: relative;
+  width: 13%;
+  //position: fixed;
+}
+
+.tempo-display {
+  //margin: 3px;
+  background-color: #D0D0D0;
+  font-family: "Digi";
+  font-size: 55px;
+  line-height: 1;
+  border-radius: 3px;
+  margin-right: 5px;
+  padding-right: 10px;
+  margin-left: 5px;
+}
+
 // KEYZ (for BEATZ ;))
 
 .keyscontainer {
@@ -112,6 +173,8 @@ a {
   }
 }
 
+// INSTRUMENT BUTTONS
+
 .patternkeyscontainer {
   width: 100%;
   padding: 10px 1px;
@@ -137,23 +200,6 @@ a {
   &.instrument-button-pressed {
     background-color: white;
   }
-}
-
-.tempocontainer {
-  position: fixed;
-  top: 5px;
-  left: 5px;
-}
-
-.tempo-display {
-  //margin: 3px;
-  background-color: #D0D0D0;
-  font-family: "Digi";
-  font-size: 55px;
-  line-height: 1;
-  padding: 0 5px;
-  border-radius: 3px;
-  margin: 5px;
 }
 
 // SLIDERS

@@ -78,6 +78,16 @@
  (fn [_ [_ voice param value]]
    {:send [:set-param voice param value]}))
 
+(rf/reg-event-fx
+  :start
+  (fn [_ _]
+    {:send [:start]}))
+
+(rf/reg-event-fx
+  :stop
+  (fn [_ _]
+    {:send [:stop]}))
+
 ;; SUBSCRIPTIONS
 
 (rf/reg-sub
@@ -150,7 +160,14 @@
         selected-seq @(rf/subscribe[::sequence selected])]
     [:div.main
      [:h1 [:em "JJ-808 "] [:small "v.1"]]
-     [tempo]
+     [:div.header 
+      [tempo]
+      [:div.start-stop-button-container 
+       {:on-click #(rf/dispatch [:start])}
+       [:div.start-stop-button-text "start"]]
+      [:div.start-stop-button-container 
+       {:on-click #(rf/dispatch [:stop])}
+       [:div.start-stop-button-text "stop"]]]
      [:div.sliders-container
       [:div.slider-pair-container
        [slider {:voice :kick :param :frequency :text "Freq."}]
