@@ -22,7 +22,6 @@ $base-font-size: 1.125em;
   background-color: black;
   font-family: $font-stack;
   margin: 0 auto;
-  //padding-top: 42px;
   -webkit-font-smoothing: antialiased;
   font-size: $base-font-size;
   color: #333;
@@ -70,20 +69,6 @@ a {
 
 // START and STOP BUTTONS
 
-//.start-stop-button {
-//  width: 14%;
-//  position: relative;
-//  background-color: #EBE696;
-//  height: 55px;
-//  font-size: 25px;
-//  line-height: 1;
-//  border-radius: 3px;
-//  margin: 5px;
-//  text-transform: uppercase;
-//  text-align: center;
-//  display: inline-block;
-//}
-
 .header {
   position: absolute;
   top: 5px;
@@ -97,12 +82,10 @@ a {
 }
 
 .start-stop-button-text {
-  //background-color: #EBE696;
   background-color: #F8E5D3;
   font-size: 20px;
   font-weight: bold;
   padding: 17px 0;
-  //line-height: 1;
   border-radius: 3px;
   margin-right: 5px;
   text-align: center;
@@ -114,11 +97,9 @@ a {
 .tempocontainer {
   position: relative;
   width: 13%;
-  //position: fixed;
 }
 
 .tempo-display {
-  //margin: 3px;
   background-color: #D0D0D0;
   font-family: "Digi";
   font-size: 55px;
@@ -153,10 +134,6 @@ a {
 
 .keybutton-pink {
   background-color: #CC3980;
-}
-
-.keybutton-pressed {
-  /* background-color: #1F0051; */
 }
 
 .button-light {
@@ -204,12 +181,6 @@ a {
 
 // SLIDERS
 
-// sliders-container
-// slider-pair-container
-// slider-container
-// slider
-
-
 .sliders-container {
   display: flex;
   margin-bottom: 10px;
@@ -241,44 +212,3 @@ a {
   z-index: 1;
   text-align: center;
 }
-
-//.slidercontainer {
-//  width: 100%;
-//  padding-top: 30px;
-//  // TODO transform-origin:
-//}
-//
-//.slider {
-//  -webkit-appearance: none;
-//  appearance: none;
-//  width: 30%;
-//  height: 15px;
-//  border-radius: 5px;
-//  background: #d3d3d3;
-//  outline: none;
-//  opacity: 0.7;
-//  -webkit-transition: .2s;
-//  transition: opacity .2s;
-//}
-//
-//.slider:hover {
-//  opacity: 1;
-//}
-//
-//.slider::-webkit-slider-thumb {
-//  -webkit-appearance: none;
-//  appearance: none;
-//  width: 25px;
-//  height: 25px;
-//  border-radius: 50%;
-//  background: #4CAF50;
-//  cursor: pointer;
-//}
-//
-//.slider::-moz-range-thumb {
-//  width: 25px;
-//  height: 25px;
-//  border-radius: 50%;
-//  background: #4CAF50;
-//  cursor: pointer;
-//}

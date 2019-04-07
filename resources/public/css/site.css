@@ -99,9 +99,6 @@ a {
 .keybutton-pink {
   background-color: #CC3980; }
 
-.keybutton-pressed {
-  /* background-color: #1F0051; */ }
-
 .button-light {
   position: absolute;
   bottom: 10px;
